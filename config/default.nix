@@ -23,5 +23,18 @@
 
   plugins = {
     which-key.enable = true;
+    treesitter = {
+      enable = true;
+      nixGrammars = true;
+      gccPackage = null;
+      nodejsPackage = null;
+      treesitterPackage = null;
+      settings = {
+        auto_install = false;
+        highlight.enable = true;
+        indent.enable = true;
+        incremental_selection.enable = true;
+      };
+    };
   };
 }
