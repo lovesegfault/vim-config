@@ -20,4 +20,8 @@
   };
 
   colorschemes.ayu.enable = true;
+
+  plugins = {
+    which-key.enable = true;
+  };
 }
