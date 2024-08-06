@@ -1,8 +1,6 @@
-{
+{ config, lib, ... }: {
   imports = [
     ./core.nix
-
-    ./bufferline.nix
   ];
 
   viAlias = true;
@@ -22,6 +20,10 @@
   colorschemes.ayu.enable = true;
 
   plugins = {
+    bufferline = {
+      enable = true;
+      diagnostics = lib.mkIf config.plugins.lsp.enable "nvim_lsp";
+    };
     which-key.enable = true;
     treesitter = {
       enable = true;
