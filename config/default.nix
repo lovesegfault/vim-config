@@ -2,6 +2,7 @@
   imports = [
     ./core.nix
     ./lsp.nix
+    ./lualine.nix
   ];
 
   viAlias = true;
@@ -49,7 +50,7 @@
     (lib.mkIf config.plugins.notify.enable [{
       key = "<C-d>";
       action = lib.nixvim.mkRaw "require('notify').dismiss";
-      mode = ["n" "v" "i"];
+      mode = [ "n" "v" "i" ];
       options.desc = "Dismiss nvim-notify notifications";
     }])
   ];
