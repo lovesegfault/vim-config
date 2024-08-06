@@ -41,5 +41,6 @@
     clangd-extensions.enable = true;
     ltex-extra.enable = true;
     rustaceanvim.enable = true;
+    fidget.enable = true;
   };
 }
