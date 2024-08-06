@@ -28,6 +28,7 @@
     dressing.enable = true;
     sleuth.enable = true;
     tmux-navigator.enable = true;
+    notify.enable = true;
     treesitter = {
       enable = true;
       nixGrammars = true;
@@ -43,4 +44,13 @@
     };
     which-key.enable = true;
   };
+
+  keymaps = lib.mkMerge [
+    (lib.mkIf config.plugins.notify.enable [{
+      key = "<C-d>";
+      action = lib.nixvim.mkRaw "require('notify').dismiss";
+      mode = ["n" "v" "i"];
+      options.desc = "Dismiss nvim-notify notifications";
+    }])
+  ];
 }
