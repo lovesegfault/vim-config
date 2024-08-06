@@ -37,6 +37,64 @@
     }
   ];
 
+  keymaps = [
+    {
+      action = ":nohl<cr>";
+      key = "<leader><cr>";
+      options.desc = "Disable search highlighting";
+    }
+    {
+      action = ":enew<cr>";
+      key = "<leader>bn";
+      options.desc = "Create a new buffer in the current window";
+    }
+    {
+      action = ":bdelete<cr>";
+      key = "<leader>bd";
+      options.desc = "Close the current buffer";
+    }
+    {
+      action = ":bufdo bd<cr>";
+      key = "<leader>ba";
+      options.desc = "Close all buffers";
+    }
+    {
+      action = ":bnext<cr>";
+      key = "<leader>l";
+      options.desc = "Go to next buffer";
+    }
+    {
+      action = ":bprevious<cr>";
+      key = "<leader>h";
+      options.desc = "Go to previous buffer";
+    }
+    {
+      action = ":tabnew<cr>";
+      key = "<leader>tn";
+      options.desc = "Create a new tab";
+    }
+    {
+      action = ":tabonly<cr>";
+      key = "<leader>to";
+      options.desc = "Close all other tabs";
+    }
+    {
+      action = ":tabclose<cr>";
+      key = "<leader>to";
+      options.desc = "Close the current tab";
+    }
+    {
+      action = ":tabmove";
+      key = "<leader>tm";
+      options.desc = "Move the current tab";
+    }
+    {
+      action = ":cd %:p:h<cr>:pwd<cr>";
+      key = "<leader>cd";
+      options.desc = "Set CWD to the directory of the current buffer";
+    }
+  ];
+
   opts = {
     history = 500;
     autoread = true; # Auto read when a file is changed from the outside
