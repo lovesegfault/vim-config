@@ -26,6 +26,7 @@
       diagnostics = lib.mkIf config.plugins.lsp.enable "nvim_lsp";
     };
     dressing.enable = true;
+    sleuth.enable = true;
     tmux-navigator.enable = true;
     treesitter = {
       enable = true;
