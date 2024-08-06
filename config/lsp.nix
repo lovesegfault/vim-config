@@ -19,6 +19,17 @@
           "<space>D" = "type_definition";
           "<space>rn" = "rename";
         };
+        extra = [
+          {
+            key = "<space>f";
+            action = lib.nixvim.mkRaw /* lua */ ''
+              function()
+                vim.lsp.buf.format({ async = true })
+              end
+            '';
+            options.desc = "Format the current buffer";
+          }
+        ];
       };
       servers = {
         bashls.enable = true;
