@@ -25,6 +25,7 @@
       enable = true;
       diagnostics = lib.mkIf config.plugins.lsp.enable "nvim_lsp";
     };
+    tmux-navigator.enable = true;
     treesitter = {
       enable = true;
       nixGrammars = true;
