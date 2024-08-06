@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ lib, pkgs, ... }: {
   plugins = {
     lsp = {
       enable = true;
@@ -43,7 +43,10 @@
           };
         };
         marksman.enable = true;
-        nil-ls.enable = true;
+        nil-ls = {
+          enable = true;
+          settings.formatting.command = [ (lib.getExe pkgs.nixpkgs-fmt) ];
+        };
         ruff.enable = true;
         pyright.enable = true;
         texlab.enable = true;
