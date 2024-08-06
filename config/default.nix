@@ -1,6 +1,7 @@
 { config, lib, ... }: {
   imports = [
     ./core.nix
+    ./lsp.nix
   ];
 
   viAlias = true;
@@ -24,7 +25,6 @@
       enable = true;
       diagnostics = lib.mkIf config.plugins.lsp.enable "nvim_lsp";
     };
-    which-key.enable = true;
     treesitter = {
       enable = true;
       nixGrammars = true;
@@ -38,5 +38,6 @@
         incremental_selection.enable = true;
       };
     };
+    which-key.enable = true;
   };
 }
