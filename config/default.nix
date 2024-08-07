@@ -41,7 +41,7 @@
     tmux-navigator.enable = true;
     todo-comments = {
       enable = true;
-      keymaps.todoTelescope.key = "<leader>tt";
+      keymaps.todoTelescope.key = "<leader>tc";
     };
     treesitter = {
       enable = true;
