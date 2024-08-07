@@ -1,11 +1,10 @@
-{ lib, pkgs, ... }: {
-  # I don't use the upstream module because it does not provide nvim-cmp integration yet
-  extraPlugins = with pkgs.vimPlugins; [ nvim-autopairs ];
-  extraConfigLua = lib.mkAfter /* lua */ ''
+{ config, lib, ... }: {
+  # upstream module does not provide nvim-cmp integration yet
+  extraConfigLua = lib.mkIf config.plugins.nvim-autopairs.enable (lib.mkAfter /* lua */ ''
     -- HACK: nvim-autopairs integration with cmp, relies on mkAfter
     local cmp_autopairs = require("nvim-autopairs.completion.cmp")
     cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-  '';
+  '');
 
   plugins = {
     cmp = {

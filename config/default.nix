@@ -29,9 +29,10 @@
       diagnostics = lib.mkIf config.plugins.lsp.enable "nvim_lsp";
     };
     dressing.enable = true;
+    notify.enable = true;
+    nvim-autopairs.enable = true;
     sleuth.enable = true;
     tmux-navigator.enable = true;
-    notify.enable = true;
     treesitter = {
       enable = true;
       nixGrammars = true;
