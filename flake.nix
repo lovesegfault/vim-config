@@ -2,6 +2,11 @@
   description = "lovesegfault's neovim configuration";
 
   inputs = {
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
+    flake-parts.url = "github:hercules-ci/flake-parts";
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs = {
@@ -10,31 +15,30 @@
         nixpkgs-stable.follows = "nixpkgs";
       };
     };
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
-    flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs = {
         flake-compat.follows = "flake-compat";
         flake-parts.follows = "flake-parts";
+        git-hooks.follows = "git-hooks";
         nixpkgs.follows = "nixpkgs";
+        treefmt-nix.follows = "treefmt-nix";
 
         devshell.follows = "";
-        git-hooks.follows = "";
         home-manager.follows = "";
         nix-darwin.follows = "";
         nuschtosSearch.follows = "";
-        treefmt-nix.follows = "";
       };
+    };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs =
-    { nixvim, flake-parts, ... }@inputs:
+    { flake-parts, ... }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
@@ -45,31 +49,31 @@
 
       imports = [
         inputs.git-hooks.flakeModule
+        inputs.treefmt-nix.flakeModule
       ];
 
       perSystem =
-        { config, pkgs, system, ... }:
+        { config, pkgs, system, self', ... }:
         let
-          nixvimLib = nixvim.lib.${system};
-          nixvim' = nixvim.legacyPackages.${system};
+          nixvimPkgs = inputs.nixvim.legacyPackages.${system};
+          nixvimLib = inputs.nixvim.lib.${system};
           nixvimModule = {
             inherit pkgs;
-            module = import ./config; # import the module directly
-            # You can use `extraSpecialArgs` to pass additional arguments to your module files
-            extraSpecialArgs = {
-              # inherit (inputs) foo;
-            };
+            module = import ./config;
           };
-          nvim = nixvim'.makeNixvimWithModule nixvimModule;
         in
         {
+          checks.nixvim = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+
           devShells.default = pkgs.mkShell {
             name = "vim-config";
             nativeBuildInputs = with pkgs; [
               nil
               nixpkgs-fmt
               statix
-            ];
+              config.treefmt.build.wrapper
+            ] ++ (builtins.attrValues config.treefmt.build.programs);
+
             shellHook = ''
               ${config.pre-commit.installationScript}
             '';
@@ -82,13 +86,22 @@
               luacheck.enable = true;
               nil.enable = true;
               statix.enable = true;
-              # treefmt.enable = true;
+              treefmt.enable = true;
             };
           };
 
-          checks.default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+          treefmt = {
+            projectRootFile = "flake.nix";
+            programs = {
+              nixpkgs-fmt.enable = true;
+              stylua.enable = true;
+            };
+          };
 
-          packages.default = nvim;
+          packages = {
+            default = self'.packages.neovim;
+            neovim = nixvimPkgs.makeNixvimWithModule nixvimModule;
+          };
         };
     };
 }
