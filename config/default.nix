@@ -64,9 +64,24 @@
 
   extraPlugins = with pkgs.vimPlugins; [
     vim-suda
+    whitespace-nvim
   ];
 
+  extraConfigLua = ''
+    require("whitespace-nvim").setup({
+      ignored_filetypes = { "TelescopePrompt", "dashboard", "help" },
+    })
+  '';
+
   keymaps = lib.mkMerge [
+    [
+      {
+        key = "<space>w";
+        action = lib.nixvim.mkRaw "require('whitespace-nvim').trim";
+        mode = [ "n" ];
+        options.desc = "Trim leading/trailing whitespace";
+      }
+    ]
     (lib.mkIf config.plugins.notify.enable [{
       key = "<C-d>";
       action = lib.nixvim.mkRaw "require('notify').dismiss";
