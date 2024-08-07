@@ -1,4 +1,4 @@
-{ config, lib, ... }: {
+{ config, lib, pkgs, ... }: {
   imports = [
     ./cmp.nix
     ./core.nix
@@ -58,6 +58,10 @@
     };
     which-key.enable = true;
   };
+
+  extraPlugins = with pkgs.vimPlugins; [
+    vim-suda
+  ];
 
   keymaps = lib.mkMerge [
     (lib.mkIf config.plugins.notify.enable [{
