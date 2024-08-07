@@ -2,13 +2,35 @@
   description = "lovesegfault's neovim configuration";
 
   inputs = {
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs = {
+        flake-compat.follows = "flake-compat";
+        nixpkgs.follows = "nixpkgs";
+        nixpkgs-stable.follows = "nixpkgs";
+      };
+    };
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
+    flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
+      inputs = {
+        flake-compat.follows = "flake-compat";
+        flake-parts.follows = "flake-parts";
+        nixpkgs.follows = "nixpkgs";
+
+        devshell.follows = "";
+        git-hooks.follows = "";
+        home-manager.follows = "";
+        nix-darwin.follows = "";
+        nuschtosSearch.follows = "";
+        treefmt-nix.follows = "";
+      };
     };
-    flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
   outputs =
@@ -21,8 +43,12 @@
         "aarch64-darwin"
       ];
 
+      imports = [
+        inputs.git-hooks.flakeModule
+      ];
+
       perSystem =
-        { pkgs, system, ... }:
+        { config, pkgs, system, ... }:
         let
           nixvimLib = nixvim.lib.${system};
           nixvim' = nixvim.legacyPackages.${system};
@@ -44,6 +70,20 @@
               nixpkgs-fmt
               statix
             ];
+            shellHook = ''
+              ${config.pre-commit.installationScript}
+            '';
+          };
+
+          pre-commit = {
+            check.enable = true;
+            settings.hooks = {
+              actionlint.enable = true;
+              luacheck.enable = true;
+              nil.enable = true;
+              statix.enable = true;
+              # treefmt.enable = true;
+            };
           };
 
           checks.default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
