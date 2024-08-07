@@ -38,7 +38,7 @@
         in
         {
           devShells.default = pkgs.mkShell {
-            name = "nixvim-config";
+            name = "vim-config";
             nativeBuildInputs = with pkgs; [
               nil
               nixpkgs-fmt
