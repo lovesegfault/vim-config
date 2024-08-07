@@ -1,17 +1,11 @@
-# Nixvim template
+# vim-config [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org) [![ci](https://github.com/lovesegfault/vim-config/actions/workflows/ci.yaml/badge.svg)](https://github.com/lovesegfault/vim-config/actions/workflows/ci.yaml)
 
-This template gives you a good starting point for configuring nixvim standalone.
+This repository holds my neovim configuration, based on [nixvim].
 
-## Configuring
+## Usage
 
-To start configuring, just add or modify the nix files in `./config`.
-If you add a new configuration file, remember to add it to the
-[`config/default.nix`](./config/default.nix) file
-
-## Testing your new configuration
-
-To test your configuration simply run the following command
-
+```console
+$ nix run github:lovesegfault/vim-config
 ```
-nix run .
-```
+
+[nixvim]: https://github.com/nix-community/nixvim/
