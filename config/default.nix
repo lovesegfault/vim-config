@@ -35,6 +35,7 @@
       enable = true;
       settings.indent.char = "▏";
     };
+    multicursors.enable = true;
     notify.enable = true;
     nvim-autopairs.enable = true;
     sleuth.enable = true;
