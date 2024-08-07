@@ -1,0 +1,50 @@
+{
+  plugins = {
+    telescope = {
+      enable = true;
+      extensions = {
+        file-browser = {
+          enable = true;
+          settings.hijack_netrw = true;
+        };
+        frecency.enable = true;
+        ui-select.enable = true;
+        undo.enable = true;
+      };
+      keymaps = {
+        "<leader>fb" = {
+          action = "buffers";
+          options.desc = "Lists open buffers in current neovim instance";
+        };
+        "<leader>fc" = {
+          action = "current_buffer_fuzzy_find";
+          options.desc = "Live fuzzy search inside of the currently open buffer";
+        };
+        "<leader>ff" = {
+          action = "frecency";
+          options.desc = "Search for files";
+        };
+        "<leader>fl" = {
+          action = "live_grep";
+          options.desc = "Search for a string and get results live as you type";
+        };
+        "<leader>fg" = {
+          action = "git_files";
+          options.desc = "Fuzzy search for files tracked by Git";
+        };
+        "<leader>gc" = {
+          action = "git_commits";
+          options.desc = "Lists commits for current directory with diff preview";
+        };
+        "<leader>gb" = {
+          action = "git_bcommits";
+          options.desc = "Lists commits for current buffer with diff preview";
+        };
+        "<leader>gs" = {
+          action = "git_status";
+          options.desc = "Lists git status for current directory";
+        };
+      };
+    };
+  };
+}

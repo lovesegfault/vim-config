@@ -1,9 +1,10 @@
 { config, lib, ... }: {
   imports = [
+    ./cmp.nix
     ./core.nix
     ./lsp.nix
     ./lualine.nix
-    ./cmp.nix
+    ./telescope.nix
   ];
 
   viAlias = true;
