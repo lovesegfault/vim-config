@@ -29,6 +29,12 @@
       diagnostics = lib.mkIf config.plugins.lsp.enable "nvim_lsp";
     };
     dressing.enable = true;
+    gitsigns.enable = true;
+    guess-indent.enable = true;
+    indent-blankline = {
+      enable = true;
+      settings.indent.char = "▏";
+    };
     notify.enable = true;
     nvim-autopairs.enable = true;
     sleuth.enable = true;
