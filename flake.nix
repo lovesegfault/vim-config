@@ -1,6 +1,11 @@
 {
   description = "lovesegfault's neovim configuration";
 
+  nixConfig = {
+    extra-trusted-substituters = [ "https://vim-config.cachix.org" ];
+    extra-trusted-public-keys = [ "vim-config.cachix.org-1:lebqx8RjL8pKLZIjCURKN91CB60vISuKpJboWSmjRJM=" ];
+  };
+
   inputs = {
     flake-compat = {
       url = "github:edolstra/flake-compat";
@@ -14,6 +19,10 @@
         nixpkgs.follows = "nixpkgs";
         nixpkgs-stable.follows = "nixpkgs";
       };
+    };
+    nix-github-actions = {
+      url = "github:nix-community/nix-github-actions";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim = {
@@ -38,70 +47,90 @@
   };
 
   outputs =
-    { flake-parts, ... }@inputs:
-    flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
+    inputs@{ self, flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; }
+      ({ lib, ... }: {
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+          "x86_64-darwin"
+          "aarch64-darwin"
+        ];
 
-      imports = [
-        inputs.git-hooks.flakeModule
-        inputs.treefmt-nix.flakeModule
-      ];
+        imports = [
+          inputs.git-hooks.flakeModule
+          inputs.treefmt-nix.flakeModule
+        ];
 
-      perSystem =
-        { config, pkgs, system, self', ... }:
-        let
-          nixvimPkgs = inputs.nixvim.legacyPackages.${system};
-          nixvimLib = inputs.nixvim.lib.${system};
-          nixvimModule = {
-            inherit pkgs;
-            module = import ./config;
-          };
-        in
-        {
-          checks.nixvim = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+        flake.githubActions =
+          let
+            githubSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ];
+            ciPkgs = [ "neovim" ];
 
-          devShells.default = pkgs.mkShell {
-            name = "vim-config";
-            nativeBuildInputs = with pkgs; [
-              nil
-              nixpkgs-fmt
-              statix
-              config.treefmt.build.wrapper
-            ] ++ (builtins.attrValues config.treefmt.build.programs);
-
-            shellHook = ''
-              ${config.pre-commit.installationScript}
-            '';
+            checkDrvs = lib.getAttrs githubSystems self.checks;
+            pkgDrvs = lib.genAttrs githubSystems
+              (system: lib.genAttrs ciPkgs
+                (pkg: self.packages.${system}.${pkg})
+              );
+          in
+          inputs.nix-github-actions.lib.mkGithubMatrix {
+            checks = lib.recursiveUpdate checkDrvs pkgDrvs;
           };
 
-          pre-commit = {
-            check.enable = true;
-            settings.hooks = {
-              actionlint.enable = true;
-              luacheck.enable = true;
-              nil.enable = true;
-              statix.enable = true;
-              treefmt.enable = true;
+        perSystem =
+          { config, pkgs, system, self', ... }:
+          let
+            nixvimPkgs = inputs.nixvim.legacyPackages.${system};
+            nixvimLib = inputs.nixvim.lib.${system};
+            nixvimModule = {
+              inherit pkgs;
+              module = import ./config;
+            };
+          in
+          {
+            checks.nixvim = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+
+            devShells.default = pkgs.mkShell {
+              name = "vim-config";
+              nativeBuildInputs = with pkgs; [
+                nil
+                nixpkgs-fmt
+                statix
+                config.treefmt.build.wrapper
+              ] ++ (builtins.attrValues config.treefmt.build.programs);
+
+              shellHook = ''
+                ${config.pre-commit.installationScript}
+              '';
+            };
+
+            pre-commit = {
+              check.enable = true;
+              settings.hooks = {
+                actionlint.enable = true;
+                luacheck.enable = true;
+                nil.enable = true;
+                statix.enable = true;
+                treefmt.enable = true;
+              };
+            };
+
+            treefmt = {
+              projectRootFile = "flake.nix";
+              flakeCheck = false; # Covered by git-hooks check
+              programs = {
+                nixpkgs-fmt.enable = true;
+                stylua.enable = true;
+              };
+            };
+
+            packages = {
+              default = self'.packages.neovim;
+              neovim = nixvimPkgs.makeNixvimWithModule nixvimModule;
+
+              # CI utils
+              inherit (pkgs) cachix nix-fast-build;
             };
           };
-
-          treefmt = {
-            projectRootFile = "flake.nix";
-            programs = {
-              nixpkgs-fmt.enable = true;
-              stylua.enable = true;
-            };
-          };
-
-          packages = {
-            default = self'.packages.neovim;
-            neovim = nixvimPkgs.makeNixvimWithModule nixvimModule;
-          };
-        };
-    };
+      });
 }
