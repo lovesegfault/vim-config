@@ -39,6 +39,10 @@
     nvim-autopairs.enable = true;
     sleuth.enable = true;
     tmux-navigator.enable = true;
+    todo-comments = {
+      enable = true;
+      keymaps.todoTelescope.key = "<leader>tt";
+    };
     treesitter = {
       enable = true;
       nixGrammars = true;
