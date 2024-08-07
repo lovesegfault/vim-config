@@ -3,6 +3,7 @@
     ./core.nix
     ./lsp.nix
     ./lualine.nix
+    ./cmp.nix
   ];
 
   viAlias = true;
