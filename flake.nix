@@ -62,20 +62,25 @@
           inputs.treefmt-nix.flakeModule
         ];
 
-        flake.githubActions =
-          let
-            githubSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ];
-            ciPkgs = [ "neovim" ];
-
-            checkDrvs = lib.getAttrs githubSystems self.checks;
-            pkgDrvs = lib.genAttrs githubSystems
-              (system: lib.genAttrs ciPkgs
-                (pkg: self.packages.${system}.${pkg})
-              );
-          in
-          inputs.nix-github-actions.lib.mkGithubMatrix {
-            checks = lib.recursiveUpdate checkDrvs pkgDrvs;
+        flake = {
+          overlays.default = final: prev: {
+            neovim-lovesegfault = self.packages.${final.stdenv.hostPlatform.system}.neovim;
           };
+          githubActions =
+            let
+              githubSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ];
+              ciPkgs = [ "neovim" ];
+
+              checkDrvs = lib.getAttrs githubSystems self.checks;
+              pkgDrvs = lib.genAttrs githubSystems
+                (system: lib.genAttrs ciPkgs
+                  (pkg: self.packages.${system}.${pkg})
+                );
+            in
+            inputs.nix-github-actions.lib.mkGithubMatrix {
+              checks = lib.recursiveUpdate checkDrvs pkgDrvs;
+            };
+        };
 
         perSystem =
           { config, pkgs, system, self', ... }:
