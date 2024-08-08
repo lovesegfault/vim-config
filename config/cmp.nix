@@ -11,6 +11,10 @@
       enable = true;
       autoEnableSources = false;
       settings = {
+        view.entries = {
+          name = "custom";
+          selection_order = "near_cursor";
+        };
         experimental.ghost_text = true;
         mapping = {
           "<C-Space>" = "cmp.mapping.complete()";
@@ -19,22 +23,37 @@
           "<C-f>" = "cmp.mapping.scroll_docs(4)";
 
           "<CR>" = /* lua */ ''
-            cmp.mapping(function(fallback)
-              if cmp.visible() then
-                if luasnip.expandable() then
-                  luasnip.expand()
+            cmp.mapping({
+              i = function(fallback)
+                if cmp.visible() and cmp.get_active_entry() then
+                  local luasnip = require("luasnip")
+                  if luasnip.expandable() then
+                    luasnip.expand()
+                  else
+                    cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+                  end
                 else
-                  cmp.confirm({
-                    select = true,
-                  })
+                  fallback()
                 end
-              else
-                fallback()
-              end
-            end)
+              end,
+              s = function(fallback)
+                if cmp.visible() then
+                  local luasnip = require("luasnip")
+                  if luasnip.expandable() then
+                    luasnip.expand()
+                  else
+                    cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
+                  end
+                else
+                  fallback()
+                end
+              end,
+              c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+            })
           '';
           "<Tab>" = /* lua */ ''
             cmp.mapping(function(fallback)
+              local luasnip = require("luasnip")
               if cmp.visible() then
                 cmp.select_next_item()
               elseif luasnip.locally_jumpable(1) then
@@ -46,6 +65,7 @@
           '';
           "<S-Tab>" = /* lua */ ''
             cmp.mapping(function(fallback)
+              local luasnip = require("luasnip")
               if cmp.visible() then
                 cmp.select_prev_item()
               elseif luasnip.locally_jumpable(-1) then
