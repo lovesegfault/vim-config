@@ -108,7 +108,6 @@
               check.enable = true;
               settings.hooks = {
                 actionlint.enable = true;
-                luacheck.enable = true;
                 nil.enable = true;
                 statix.enable = true;
                 treefmt.enable = true;
@@ -120,7 +119,6 @@
               flakeCheck = false; # Covered by git-hooks check
               programs = {
                 nixpkgs-fmt.enable = true;
-                stylua.enable = true;
               };
             };
 
