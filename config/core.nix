@@ -98,7 +98,7 @@
   opts = {
     history = 500;
     autoread = true; # Auto read when a file is changed from the outside
-    signcolumn = "number"; # Shows signs in the number column
+    signcolumn = "yes"; # Always show the signcolumn
     number = true; # Show line numbers
     cursorline = true; # Highlight the cursor's line
     scrolloff = 10; # Minimal number of screen lines to keep above and below the cursor
