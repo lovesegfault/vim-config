@@ -6,6 +6,27 @@
     cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
   '');
 
+  # Automatic session cancellation for luasnip
+  # c.f. https://github.com/L3MON4D3/LuaSnip/issues/258
+  autoCmd = [{
+    desc = "automatically cancel luasnip session when changing mode";
+    event = [ "ModeChanged" ];
+    pattern = "*";
+    callback = lib.nixvim.mkRaw ''
+      function()
+        local luasnip = require("luasnip")
+        if
+          ((vim.v.event.old_mode == "s" and vim.v.event.new_mode == "n") or vim.v.event.old_mode == "i")
+          and luasnip.session.current_nodes[vim.api.nvim_get_current_buf()]
+          and not luasnip.session.jump_active
+        then
+          luasnip.unlink_current()
+        end
+      end
+    '';
+
+  }];
+
   plugins = {
     cmp = {
       enable = true;

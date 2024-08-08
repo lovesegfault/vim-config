@@ -1,4 +1,4 @@
-{
+{ lib, ... }: {
   autoCmd = [
     {
       desc = "auto read when a file is changed from the outside";
@@ -15,7 +15,7 @@
     {
       desc = "return to last edit position when opening files";
       event = [ "BufRead" ];
-      callback.__raw = /* lua */ ''
+      callback = lib.nixvim.mkRaw ''
         function(opts)
           vim.api.nvim_create_autocmd('BufWinEnter', {
             once = true,
