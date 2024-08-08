@@ -88,5 +88,31 @@
       mode = [ "n" "v" "i" ];
       options.desc = "Dismiss nvim-notify notifications";
     }])
+    (lib.mkIf config.plugins.multicursors.enable [
+      {
+        key = "ms";
+        action = ":MCstart<cr>";
+        mode = [ "n" "v" ];
+        options.desc = "Select the word under the cursor and start listening for the actions";
+      }
+      {
+        key = "mp";
+        action = ":MCvisualPattern<cr>";
+        mode = [ "v" ];
+        options.desc = "Prompts for a pattern and selects every match in the visual selection";
+      }
+      {
+        key = "mp";
+        action = ":MCpattern<cr>";
+        mode = [ "n" ];
+        options.desc = "Prompts for a pattern and selects every match in the buffer";
+      }
+      {
+        key = "mc";
+        action = ":MCclear<cr>";
+        mode = [ "n" "v" ];
+        options.desc = "Clears all multicursor selections";
+      }
+    ])
   ];
 }
