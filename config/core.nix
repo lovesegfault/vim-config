@@ -102,6 +102,7 @@
     number = true; # Show line numbers
     cursorline = true; # Highlight the cursor's line
     scrolloff = 10; # Minimal number of screen lines to keep above and below the cursor
+    undofile = true; # Enable persistent undo history
     # Ignore case in general, but become case-sensitive when uppercase is present
     ignorecase = true;
     smartcase = true;
