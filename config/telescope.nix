@@ -7,7 +7,10 @@
           enable = true;
           settings.hijack_netrw = true;
         };
-        frecency.enable = true;
+        frecency = {
+          enable = true;
+          settings.db_safe_mode = false;
+        };
         ui-select.enable = true;
         undo.enable = true;
       };
