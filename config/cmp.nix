@@ -77,10 +77,7 @@
         ellipsisChar = "…";
       };
     };
-    luasnip = {
-      enable = true;
-      fromVscode = [{ }];
-    };
+    luasnip.enable = true;
     friendly-snippets.enable = true;
   };
 }
