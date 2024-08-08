@@ -17,11 +17,46 @@
           "<C-d>" = "cmp.mapping.scroll_docs(-4)";
           "<C-e>" = "cmp.mapping.close()";
           "<C-f>" = "cmp.mapping.scroll_docs(4)";
-          "<CR>" = "cmp.mapping.confirm({ select = true })";
-          "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
-          "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+
+          "<CR>" = /* lua */ ''
+            cmp.mapping(function(fallback)
+              if cmp.visible() then
+                if luasnip.expandable() then
+                  luasnip.expand()
+                else
+                  cmp.confirm({
+                    select = true,
+                  })
+                end
+              else
+                fallback()
+              end
+            end)
+          '';
+          "<Tab>" = /* lua */ ''
+            cmp.mapping(function(fallback)
+              if cmp.visible() then
+                cmp.select_next_item()
+              elseif luasnip.locally_jumpable(1) then
+                luasnip.jump(1)
+              else
+                fallback()
+              end
+            end, { "i", "s" })
+          '';
+          "<S-Tab>" = /* lua */ ''
+            cmp.mapping(function(fallback)
+              if cmp.visible() then
+                cmp.select_prev_item()
+              elseif luasnip.locally_jumpable(-1) then
+                luasnip.jump(-1)
+              else
+                fallback()
+              end
+            end, { "i", "s" })
+          '';
         };
-        snippet.expand = ''
+        snippet.expand = /* lua */ ''
           function(args)
             require('luasnip').lsp_expand(args.body)
           end
@@ -50,12 +85,7 @@
             { name = "path"; }
             {
               name = "cmdline";
-              option = {
-                ignore_cmds = [
-                  "Man"
-                  "!"
-                ];
-              };
+              option.ignore_cmds = [ "Man" "!" ];
             }
           ];
         };
