@@ -34,15 +34,19 @@
         };
         "<leader>gc" = {
           action = "git_commits";
-          options.desc = "Lists commits for current directory with diff preview";
+          options.desc = "List commits for current directory with diff preview";
         };
         "<leader>gb" = {
           action = "git_bcommits";
-          options.desc = "Lists commits for current buffer with diff preview";
+          options.desc = "List commits for current buffer with diff preview";
         };
         "<leader>gs" = {
           action = "git_status";
-          options.desc = "Lists git status for current directory";
+          options.desc = "List git status for current directory";
+        };
+        "<leader>u" = {
+          action = "undo";
+          options.desc = "List undo history";
         };
       };
     };
