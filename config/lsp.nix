@@ -1,4 +1,10 @@
 { config, lib, pkgs, ... }: {
+  # XXX: The upstream crates-nvim module doesn't support the in-process LSP, so
+  # we hook it up manually. See plugins.lsp.postConfig below
+  extraPlugins = with pkgs.vimPlugins; [
+    crates-nvim
+  ];
+
   plugins = {
     lsp = {
       enable = true;
@@ -78,6 +84,17 @@
         pyright.enable = true;
         texlab.enable = true;
       };
+      postConfig = ''
+        require("crates").setup({
+          lsp = {
+            enabled = true,
+            on_attach = __lspOnAttach,
+            actions = true,
+            completion = true,
+            hover = true,
+          },
+        })
+      '';
     };
     clangd-extensions.enable = true;
     ltex-extra.enable = true;
