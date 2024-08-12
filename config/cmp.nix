@@ -44,33 +44,18 @@
           "<C-f>" = "cmp.mapping.scroll_docs(4)";
 
           "<CR>" = /* lua */ ''
-            cmp.mapping({
-              i = function(fallback)
-                if cmp.visible() and cmp.get_active_entry() then
+            cmp.mapping(function(fallback)
+              if cmp.visible() then
                   local luasnip = require("luasnip")
                   if luasnip.expandable() then
-                    luasnip.expand()
+                      luasnip.expand()
                   else
-                    cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+                      cmp.confirm({ select = true })
                   end
-                else
+              else
                   fallback()
-                end
-              end,
-              s = function(fallback)
-                if cmp.visible() then
-                  local luasnip = require("luasnip")
-                  if luasnip.expandable() then
-                    luasnip.expand()
-                  else
-                    cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
-                  end
-                else
-                  fallback()
-                end
-              end,
-              c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
-            })
+              end
+            end)
           '';
           "<Tab>" = /* lua */ ''
             cmp.mapping(function(fallback)
