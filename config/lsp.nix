@@ -5,6 +5,10 @@
     crates-nvim
   ];
 
+  extraPackages = with pkgs; [
+    vscode-extensions.vadimcn.vscode-lldb.adapter
+  ];
+
   plugins = {
     lsp = {
       enable = true;
