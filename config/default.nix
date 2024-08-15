@@ -26,7 +26,7 @@
   plugins = {
     bufferline = {
       enable = true;
-      diagnostics = lib.mkIf config.plugins.lsp.enable "nvim_lsp";
+      settings.options.diagnostics = lib.mkIf config.plugins.lsp.enable "nvim_lsp";
     };
     dap = {
       enable = true;
