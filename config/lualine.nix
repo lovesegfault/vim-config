@@ -2,7 +2,7 @@
   plugins = {
     navic = {
       enable = true;
-      lsp.autoAttach = true;
+      settings.lsp.auto_attach = true;
     };
     lualine =
       let
