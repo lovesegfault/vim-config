@@ -7,12 +7,12 @@
     lualine =
       let
         filetype = {
-          name = "filetype";
-          extraConfig.icon_only = true;
+          __unkeyed-1 = "filetype";
+          icon_only = true;
         };
         filename = {
-          name = "filename";
-          extraConfig.symbols = {
+          __unkeyed-1 = "filename";
+          symbols = {
             modified = "●";
             readonly = "🔒";
             unnamed = "[No Name]";
@@ -20,17 +20,17 @@
           };
         };
         diff = {
-          name = "diff";
-          extraConfig.symbols = {
+          __unkeyed-1 = "diff";
+          symbols = {
             added = " ";
             modified = " ";
             removed = " ";
           };
         };
         diagnostics = {
-          name = "diagnostics";
-          extraConfig.sources = [ "nvim_lsp" ];
-          extraConfig.symbols = {
+          __unkeyed-1 = "diagnostics";
+          sources = [ "nvim_lsp" ];
+          symbols = {
             error = " ";
             warn = " ";
             info = " ";
@@ -40,33 +40,38 @@
       in
       {
         enable = true;
-        theme = lib.mkIf config.colorschemes.ayu.enable "ayu_dark";
-        sectionSeparators = {
-          left = "";
-          right = "";
+        settings = {
+          inactive_sections = {
+            lualine_a = [ ];
+            lualine_b = [ ];
+            lualine_c = [ filetype filename ];
+            lualine_x = [ "location" ];
+            lualine_y = [ ];
+            lualine_z = [ ];
+          };
+          sections = {
+            lualine_a = [ "mode" ];
+            lualine_b = [ filetype filename "navic" ];
+            lualine_c = [
+              diagnostics
+            ];
+            lualine_x = [ "searchcount" diff "branch" ];
+            lualine_y = [ "encoding" "fileformat" ];
+            lualine_z = [ "location" "progress" ];
+          };
+          options = {
+            theme = lib.mkIf config.colorschemes.ayu.enable "ayu_dark";
+            section_separators = {
+              left = "";
+              right = "";
+            };
+            component_separators = {
+              left = "";
+              right = "";
+            };
+          };
         };
-        componentSeparators = {
-          left = "";
-          right = "";
-        };
-        sections = {
-          lualine_a = [ "mode" ];
-          lualine_b = [ filetype filename "navic" ];
-          lualine_c = [
-            diagnostics
-          ];
-          lualine_x = [ "searchcount" diff "branch" ];
-          lualine_y = [ "encoding" "fileformat" ];
-          lualine_z = [ "location" "progress" ];
-        };
-        inactiveSections = {
-          lualine_a = [ ];
-          lualine_b = [ ];
-          lualine_c = [ filetype filename ];
-          lualine_x = [ "location" ];
-          lualine_y = [ ];
-          lualine_z = [ ];
-        };
+
       };
   };
 }
