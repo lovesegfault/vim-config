@@ -77,6 +77,10 @@
         incremental_selection.enable = true;
       };
     };
+    vim-matchup = {
+      enable = true;
+      enableSurround = true;
+    };
     which-key.enable = true;
   };
 
