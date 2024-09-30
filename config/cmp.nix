@@ -1,11 +1,4 @@
 { config, lib, ... }: {
-  # upstream module does not provide nvim-cmp integration yet
-  extraConfigLua = lib.mkIf config.plugins.nvim-autopairs.enable (lib.mkAfter /* lua */ ''
-    -- HACK: nvim-autopairs integration with cmp, relies on mkAfter
-    local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-    cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-  '');
-
   # Automatic session cancellation for luasnip
   # c.f. https://github.com/L3MON4D3/LuaSnip/issues/258
   autoCmd = [{
@@ -31,6 +24,10 @@
     cmp = {
       enable = true;
       autoEnableSources = false;
+      # upstream module does not provide nvim-cmp integration yet
+      luaConfig.post = lib.mkIf config.plugins.nvim-autopairs.enable /* lua */ ''
+        cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done())
+      '';
       settings = {
         view.entries = {
           name = "custom";
