@@ -87,6 +87,7 @@
         ruff.enable = true;
         pyright.enable = true;
         texlab.enable = true;
+        ts-ls.enable = true;
       };
       postConfig = ''
         require("crates").setup({
