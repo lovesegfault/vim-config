@@ -72,7 +72,7 @@
         bashls.enable = true;
         clangd.enable = true;
         ltex.enable = true;
-        lua-ls = {
+        lua_ls = {
           enable = true;
           settings = {
             runtime.version = "LuaJIT";
@@ -80,14 +80,14 @@
           };
         };
         marksman.enable = true;
-        nil-ls = {
+        nil_ls = {
           enable = true;
           settings.formatting.command = [ (lib.getExe pkgs.nixpkgs-fmt) ];
         };
         ruff.enable = true;
         pyright.enable = true;
         texlab.enable = true;
-        ts-ls.enable = true;
+        ts_ls.enable = true;
       };
       postConfig = ''
         require("crates").setup({
