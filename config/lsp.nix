@@ -82,7 +82,13 @@
         marksman.enable = true;
         nil_ls = {
           enable = true;
-          settings.formatting.command = [ (lib.getExe pkgs.nixpkgs-fmt) ];
+          settings = {
+            formatting.command = [ (lib.getExe pkgs.nixpkgs-fmt) ];
+            nix.flake = {
+              autoArchive = true;
+              autoEvalInputs = true;
+            };
+          };
         };
         ruff.enable = true;
         pyright.enable = true;
