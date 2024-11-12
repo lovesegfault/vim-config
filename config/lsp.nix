@@ -84,9 +84,12 @@
           enable = true;
           settings = {
             formatting.command = [ (lib.getExe pkgs.nixpkgs-fmt) ];
-            nix.flake = {
-              autoArchive = true;
-              autoEvalInputs = true;
+            nix = {
+              maxMemoryMB = null;
+              flake = {
+                autoArchive = true;
+                autoEvalInputs = true;
+              };
             };
           };
         };
