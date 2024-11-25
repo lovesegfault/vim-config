@@ -113,7 +113,6 @@
                 with pkgs;
                 [
                   nil
-                  nixfmt-rfc-style
                   statix
                   config.treefmt.build.wrapper
                 ]
@@ -138,7 +137,7 @@
               projectRootFile = "flake.nix";
               flakeCheck = false; # Covered by git-hooks check
               programs = {
-                nixfmt-rfc-style.enable = true;
+                nixfmt.enable = true;
               };
             };
 
