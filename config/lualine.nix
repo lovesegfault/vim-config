@@ -1,4 +1,5 @@
-{ config, lib, ... }: {
+{ config, lib, ... }:
+{
   plugins = {
     navic = {
       enable = true;
@@ -44,20 +45,37 @@
           inactive_sections = {
             lualine_a = [ ];
             lualine_b = [ ];
-            lualine_c = [ filetype filename ];
+            lualine_c = [
+              filetype
+              filename
+            ];
             lualine_x = [ "location" ];
             lualine_y = [ ];
             lualine_z = [ ];
           };
           sections = {
             lualine_a = [ "mode" ];
-            lualine_b = [ filetype filename "navic" ];
+            lualine_b = [
+              filetype
+              filename
+              "navic"
+            ];
             lualine_c = [
               diagnostics
             ];
-            lualine_x = [ "searchcount" diff "branch" ];
-            lualine_y = [ "encoding" "fileformat" ];
-            lualine_z = [ "location" "progress" ];
+            lualine_x = [
+              "searchcount"
+              diff
+              "branch"
+            ];
+            lualine_y = [
+              "encoding"
+              "fileformat"
+            ];
+            lualine_z = [
+              "location"
+              "progress"
+            ];
           };
           options = {
             theme = lib.mkIf config.colorschemes.ayu.enable "ayu_dark";

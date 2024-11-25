@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   imports = [
     ./cmp.nix
     ./core.nix
@@ -107,17 +113,26 @@
         options.desc = "Trim leading/trailing whitespace";
       }
     ]
-    (lib.mkIf config.plugins.notify.enable [{
-      key = "<C-d>";
-      action = lib.nixvim.mkRaw "require('notify').dismiss";
-      mode = [ "n" "v" "i" ];
-      options.desc = "Dismiss nvim-notify notifications";
-    }])
+    (lib.mkIf config.plugins.notify.enable [
+      {
+        key = "<C-d>";
+        action = lib.nixvim.mkRaw "require('notify').dismiss";
+        mode = [
+          "n"
+          "v"
+          "i"
+        ];
+        options.desc = "Dismiss nvim-notify notifications";
+      }
+    ])
     (lib.mkIf config.plugins.multicursors.enable [
       {
         key = "ms";
         action = ":MCstart<cr>";
-        mode = [ "n" "v" ];
+        mode = [
+          "n"
+          "v"
+        ];
         options.desc = "Select the word under the cursor and start listening for the actions";
       }
       {
@@ -135,7 +150,10 @@
       {
         key = "mc";
         action = ":MCclear<cr>";
-        mode = [ "n" "v" ];
+        mode = [
+          "n"
+          "v"
+        ];
         options.desc = "Clears all multicursor selections";
       }
     ])

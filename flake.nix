@@ -3,7 +3,9 @@
 
   nixConfig = {
     extra-trusted-substituters = [ "https://vim-config.cachix.org" ];
-    extra-trusted-public-keys = [ "vim-config.cachix.org-1:lebqx8RjL8pKLZIjCURKN91CB60vISuKpJboWSmjRJM=" ];
+    extra-trusted-public-keys = [
+      "vim-config.cachix.org-1:lebqx8RjL8pKLZIjCURKN91CB60vISuKpJboWSmjRJM="
+    ];
   };
 
   inputs = {
@@ -48,8 +50,9 @@
 
   outputs =
     inputs@{ self, flake-parts, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; }
-      ({ lib, ... }: {
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      { lib, ... }:
+      {
         systems = [
           "x86_64-linux"
           "aarch64-linux"
@@ -68,14 +71,17 @@
           };
           githubActions =
             let
-              githubSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ];
+              githubSystems = [
+                "x86_64-linux"
+                "x86_64-darwin"
+                "aarch64-darwin"
+              ];
               ciPkgs = [ "neovim" ];
 
               checkDrvs = lib.getAttrs githubSystems self.checks;
-              pkgDrvs = lib.genAttrs githubSystems
-                (system: lib.genAttrs ciPkgs
-                  (pkg: self.packages.${system}.${pkg})
-                );
+              pkgDrvs = lib.genAttrs githubSystems (
+                system: lib.genAttrs ciPkgs (pkg: self.packages.${system}.${pkg})
+              );
             in
             inputs.nix-github-actions.lib.mkGithubMatrix {
               checks = lib.recursiveUpdate checkDrvs pkgDrvs;
@@ -83,7 +89,13 @@
         };
 
         perSystem =
-          { config, pkgs, system, self', ... }:
+          {
+            config,
+            pkgs,
+            system,
+            self',
+            ...
+          }:
           let
             nixvimPkgs = inputs.nixvim.legacyPackages.${system};
             nixvimLib = inputs.nixvim.lib.${system};
@@ -97,12 +109,15 @@
 
             devShells.default = pkgs.mkShell {
               name = "vim-config";
-              nativeBuildInputs = with pkgs; [
-                nil
-                nixpkgs-fmt
-                statix
-                config.treefmt.build.wrapper
-              ] ++ (builtins.attrValues config.treefmt.build.programs);
+              nativeBuildInputs =
+                with pkgs;
+                [
+                  nil
+                  nixfmt-rfc-style
+                  statix
+                  config.treefmt.build.wrapper
+                ]
+                ++ (builtins.attrValues config.treefmt.build.programs);
 
               shellHook = ''
                 ${config.pre-commit.installationScript}
@@ -123,7 +138,7 @@
               projectRootFile = "flake.nix";
               flakeCheck = false; # Covered by git-hooks check
               programs = {
-                nixpkgs-fmt.enable = true;
+                nixfmt-rfc-style.enable = true;
               };
             };
 
@@ -135,5 +150,6 @@
               inherit (pkgs) cachix nix-fast-build;
             };
           };
-      });
+      }
+    );
 }

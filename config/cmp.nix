@@ -1,33 +1,38 @@
-{ config, lib, ... }: {
+{ config, lib, ... }:
+{
   # Automatic session cancellation for luasnip
   # c.f. https://github.com/L3MON4D3/LuaSnip/issues/258
-  autoCmd = [{
-    desc = "automatically cancel luasnip session when changing mode";
-    event = [ "ModeChanged" ];
-    pattern = "*";
-    callback = lib.nixvim.mkRaw ''
-      function()
-        local luasnip = require("luasnip")
-        if
-          ((vim.v.event.old_mode == "s" and vim.v.event.new_mode == "n") or vim.v.event.old_mode == "i")
-          and luasnip.session.current_nodes[vim.api.nvim_get_current_buf()]
-          and not luasnip.session.jump_active
-        then
-          luasnip.unlink_current()
+  autoCmd = [
+    {
+      desc = "automatically cancel luasnip session when changing mode";
+      event = [ "ModeChanged" ];
+      pattern = "*";
+      callback = lib.nixvim.mkRaw ''
+        function()
+          local luasnip = require("luasnip")
+          if
+            ((vim.v.event.old_mode == "s" and vim.v.event.new_mode == "n") or vim.v.event.old_mode == "i")
+            and luasnip.session.current_nodes[vim.api.nvim_get_current_buf()]
+            and not luasnip.session.jump_active
+          then
+            luasnip.unlink_current()
+          end
         end
-      end
-    '';
+      '';
 
-  }];
+    }
+  ];
 
   plugins = {
     cmp = {
       enable = true;
       autoEnableSources = false;
       # upstream module does not provide nvim-cmp integration yet
-      luaConfig.post = lib.mkIf config.plugins.nvim-autopairs.enable /* lua */ ''
-        cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done())
-      '';
+      luaConfig.post =
+        lib.mkIf config.plugins.nvim-autopairs.enable # lua
+          ''
+            cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done())
+          '';
       settings = {
         view.entries = {
           name = "custom";
@@ -40,50 +45,54 @@
           "<C-e>" = "cmp.mapping.close()";
           "<C-f>" = "cmp.mapping.scroll_docs(4)";
 
-          "<CR>" = /* lua */ ''
-            cmp.mapping(function(fallback)
-              if cmp.visible() then
-                  local luasnip = require("luasnip")
-                  if luasnip.expandable() then
-                      luasnip.expand()
-                  else
-                      cmp.confirm({ select = true })
-                  end
-              else
+          "<CR>" = # lua
+            ''
+              cmp.mapping(function(fallback)
+                if cmp.visible() then
+                    local luasnip = require("luasnip")
+                    if luasnip.expandable() then
+                        luasnip.expand()
+                    else
+                        cmp.confirm({ select = true })
+                    end
+                else
+                    fallback()
+                end
+              end)
+            '';
+          "<Tab>" = # lua
+            ''
+              cmp.mapping(function(fallback)
+                local luasnip = require("luasnip")
+                if cmp.visible() then
+                  cmp.select_next_item()
+                elseif luasnip.locally_jumpable(1) then
+                  luasnip.jump(1)
+                else
                   fallback()
-              end
-            end)
-          '';
-          "<Tab>" = /* lua */ ''
-            cmp.mapping(function(fallback)
-              local luasnip = require("luasnip")
-              if cmp.visible() then
-                cmp.select_next_item()
-              elseif luasnip.locally_jumpable(1) then
-                luasnip.jump(1)
-              else
-                fallback()
-              end
-            end, { "i", "s" })
-          '';
-          "<S-Tab>" = /* lua */ ''
-            cmp.mapping(function(fallback)
-              local luasnip = require("luasnip")
-              if cmp.visible() then
-                cmp.select_prev_item()
-              elseif luasnip.locally_jumpable(-1) then
-                luasnip.jump(-1)
-              else
-                fallback()
-              end
-            end, { "i", "s" })
-          '';
+                end
+              end, { "i", "s" })
+            '';
+          "<S-Tab>" = # lua
+            ''
+              cmp.mapping(function(fallback)
+                local luasnip = require("luasnip")
+                if cmp.visible() then
+                  cmp.select_prev_item()
+                elseif luasnip.locally_jumpable(-1) then
+                  luasnip.jump(-1)
+                else
+                  fallback()
+                end
+              end, { "i", "s" })
+            '';
         };
-        snippet.expand = /* lua */ ''
-          function(args)
-            require('luasnip').lsp_expand(args.body)
-          end
-        '';
+        snippet.expand = # lua
+          ''
+            function(args)
+              require('luasnip').lsp_expand(args.body)
+            end
+          '';
         sources = [
           { name = "nvim_lsp"; }
           { name = "luasnip"; }
@@ -108,7 +117,10 @@
             { name = "path"; }
             {
               name = "cmdline";
-              option.ignore_cmds = [ "Man" "!" ];
+              option.ignore_cmds = [
+                "Man"
+                "!"
+              ];
             }
           ];
         };

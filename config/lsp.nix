@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   # XXX: The upstream crates-nvim module doesn't support the in-process LSP, so
   # we hook it up manually. See plugins.lsp.postConfig below
   extraPlugins = with pkgs.vimPlugins; [
@@ -30,38 +36,57 @@
           "<space>rn" = "rename";
         };
         extra = lib.mkMerge [
-          [{
-            key = "<space>f";
-            mode = [ "n" "v" ];
-            action = lib.nixvim.mkRaw /* lua */ ''
-              function()
-                vim.lsp.buf.format({ async = true })
-              end
-            '';
-            options.desc = "Format the current buffer";
-          }]
+          [
+            {
+              key = "<space>f";
+              mode = [
+                "n"
+                "v"
+              ];
+              action =
+                lib.nixvim.mkRaw # lua
+                  ''
+                    function()
+                      vim.lsp.buf.format({ async = true })
+                    end
+                  '';
+              options.desc = "Format the current buffer";
+            }
+          ]
           (lib.mkIf config.plugins.telescope.enable [
             {
               key = "gd";
-              mode = [ "n" "v" ];
+              mode = [
+                "n"
+                "v"
+              ];
               action = lib.nixvim.mkRaw "require('telescope.builtin').lsp_definitions";
               options.desc = "View LSP definitions in telescope";
             }
             {
               key = "gi";
-              mode = [ "n" "v" ];
+              mode = [
+                "n"
+                "v"
+              ];
               action = lib.nixvim.mkRaw "require('telescope.builtin').lsp_implementations";
               options.desc = "View LSP implementations in telescope";
             }
             {
               key = "gr";
-              mode = [ "n" "v" ];
+              mode = [
+                "n"
+                "v"
+              ];
               action = lib.nixvim.mkRaw "require('telescope.builtin').lsp_references";
               options.desc = "View LSP references in telescope";
             }
             {
               key = "<space>D";
-              mode = [ "n" "v" ];
+              mode = [
+                "n"
+                "v"
+              ];
               action = lib.nixvim.mkRaw "require('telescope.builtin').lsp_type_definitions";
               options.desc = "View LSP type definitions in telescope";
             }
@@ -83,7 +108,7 @@
         nil_ls = {
           enable = true;
           settings = {
-            formatting.command = [ (lib.getExe pkgs.nixpkgs-fmt) ];
+            formatting.command = [ "nixfmt" ];
             nix = {
               maxMemoryMB = null;
               flake = {

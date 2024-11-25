@@ -1,4 +1,5 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   autoCmd = [
     {
       desc = "auto read when a file is changed from the outside";
