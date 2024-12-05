@@ -89,12 +89,12 @@
       enable = true;
       enableSurround = true;
     };
+    vim-suda.enable = true;
     web-devicons.enable = true;
     which-key.enable = true;
   };
 
   extraPlugins = with pkgs.vimPlugins; [
-    vim-suda
     whitespace-nvim
   ];
 
