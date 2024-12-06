@@ -85,6 +85,23 @@
         incremental_selection.enable = true;
       };
     };
+    trim = {
+      enable = true;
+      settings = rec {
+        ft_blocklist = [
+          "TelescopePrompt"
+          "dashboard"
+          "help"
+        ];
+        highlight = true;
+        # highlight_ctermbg = "DiffDelete";
+        highlight_bg = lib.nixvim.mkRaw "vim.api.nvim_get_hl(0, {name= 'DiffDelete'}).bg";
+        highlight_ctermbg = highlight_bg;
+        trim_first_line = false;
+        trim_last_line = false;
+        trim_on_write = false;
+      };
+    };
     vim-matchup = {
       enable = true;
       enableSurround = true;
@@ -94,21 +111,11 @@
     which-key.enable = true;
   };
 
-  extraPlugins = with pkgs.vimPlugins; [
-    whitespace-nvim
-  ];
-
-  extraConfigLua = ''
-    require("whitespace-nvim").setup({
-      ignored_filetypes = { "TelescopePrompt", "dashboard", "help" },
-    })
-  '';
-
   keymaps = lib.mkMerge [
     [
       {
         key = "<space>w";
-        action = lib.nixvim.mkRaw "require('whitespace-nvim').trim";
+        action = ":Trim";
         mode = [ "n" ];
         options.desc = "Trim leading/trailing whitespace";
       }
