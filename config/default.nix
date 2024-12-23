@@ -104,7 +104,7 @@
     };
     vim-matchup = {
       enable = true;
-      enableSurround = true;
+      settings.surround_enabled = 1;
     };
     vim-suda.enable = true;
     web-devicons.enable = true;
