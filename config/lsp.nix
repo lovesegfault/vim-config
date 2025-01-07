@@ -11,9 +11,10 @@
     crates-nvim
   ];
 
-  extraPackages = with pkgs; [
-    vscode-extensions.vadimcn.vscode-lldb.adapter
-  ];
+  # FIXME: lldb is broken on darwin
+  # extraPackages = with pkgs; [
+  #   vscode-extensions.vadimcn.vscode-lldb.adapter
+  # ];
 
   plugins = {
     lsp = {
