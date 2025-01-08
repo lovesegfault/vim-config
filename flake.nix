@@ -19,7 +19,6 @@
       inputs = {
         flake-compat.follows = "flake-compat";
         nixpkgs.follows = "nixpkgs";
-        nixpkgs-stable.follows = "nixpkgs";
       };
     };
     nix-github-actions = {
