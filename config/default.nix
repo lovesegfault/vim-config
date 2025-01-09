@@ -115,7 +115,7 @@
     [
       {
         key = "<space>w";
-        action = ":Trim";
+        action = ":Trim<cr>";
         mode = [ "n" ];
         options.desc = "Trim leading/trailing whitespace";
       }
