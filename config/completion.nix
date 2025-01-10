@@ -16,6 +16,26 @@
           enabled = true;
           window.border = "rounded";
         };
+        sources = {
+          default = [
+            "lsp"
+            "path"
+            "snippets"
+            "buffer"
+            "tmux"
+          ];
+          providers = {
+            lsp.score_offset = 3;
+            path.score_offset = 2;
+            snippets.score_offset = 2;
+            buffer.score_offset = 1;
+            tmux = {
+              name = "tmux";
+              module = "blink.compat.source";
+              score_offset = 0;
+            };
+          };
+        };
         keymap = {
           preset = "enter";
           "<Tab>" = [
@@ -37,6 +57,8 @@
         };
       };
     };
+    cmp-tmux.enable = true;
+    blink-compat.enable = true;
     friendly-snippets.enable = true;
   };
 }
