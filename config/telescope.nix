@@ -15,6 +15,7 @@
         ui-select.enable = true;
         undo.enable = true;
       };
+      settings.pickers.colorscheme.enable_preview = true;
       keymaps = {
         "<leader>fb" = {
           action = "buffers";
