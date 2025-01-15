@@ -26,7 +26,14 @@
     };
   };
 
-  colorschemes.ayu.enable = true;
+  colorscheme = "ayu";
+
+  colorschemes = {
+    ayu.enable = true;
+    catppuccin.enable = true;
+    kanagawa.enable = true;
+    tokyonight.enable = true;
+  };
 
   plugins = {
     bufferline = {
