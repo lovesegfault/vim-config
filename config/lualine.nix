@@ -78,7 +78,7 @@
             ];
           };
           options = {
-            theme = lib.mkIf config.colorschemes.ayu.enable "ayu_dark";
+            theme = "auto";
             section_separators = {
               left = "";
               right = "";
