@@ -143,7 +143,7 @@
               neovim = nixvimPkgs.makeNixvimWithModule nixvimModule;
 
               # CI utils
-              inherit (pkgs) cachix nix-fast-build;
+              inherit (pkgs) nix-fast-build;
             };
           };
       }
