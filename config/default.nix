@@ -107,6 +107,7 @@
     vim-suda.enable = true;
     web-devicons.enable = true;
     which-key.enable = true;
+    zen-mode.enable = true;
   };
 
   keymaps = lib.mkMerge [
