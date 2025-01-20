@@ -51,12 +51,15 @@
     inputs@{ self, flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } (
       { lib, ... }:
+      let
+        githubPlatforms = {
+          "x86_64-linux" = "ubuntu-24.04";
+          "aarch64-darwin" = "macos-15";
+          "aarch64-linux" = "ubuntu-24.04-arm";
+        };
+      in
       {
-        systems = [
-          "x86_64-linux"
-          "aarch64-linux"
-          "aarch64-darwin"
-        ];
+        systems = lib.attrNames githubPlatforms;
 
         imports = [
           inputs.git-hooks.flakeModule
@@ -69,12 +72,8 @@
           };
           githubActions =
             let
-              githubSystems = [
-                "x86_64-linux"
-                "aarch64-darwin"
-              ];
+              githubSystems = lib.attrNames githubPlatforms;
               ciPkgs = [ "neovim" ];
-
               checkDrvs = lib.getAttrs githubSystems self.checks;
               pkgDrvs = lib.genAttrs githubSystems (
                 system: lib.genAttrs ciPkgs (pkg: self.packages.${system}.${pkg})
@@ -82,6 +81,7 @@
             in
             inputs.nix-github-actions.lib.mkGithubMatrix {
               checks = lib.recursiveUpdate checkDrvs pkgDrvs;
+              platforms = githubPlatforms;
             };
         };
 
@@ -113,7 +113,7 @@
                   statix
                   config.treefmt.build.wrapper
                 ]
-                ++ (builtins.attrValues config.treefmt.build.programs);
+                ++ (lib.attrValues config.treefmt.build.programs);
 
               shellHook = ''
                 ${config.pre-commit.installationScript}
