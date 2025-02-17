@@ -5,6 +5,10 @@
   ...
 }:
 {
+  extraPackages = with pkgs; [
+    nixfmt-rfc-style
+  ];
+
   # XXX: The upstream crates-nvim module doesn't support the in-process LSP, so
   # we hook it up manually. See plugins.lsp.postConfig below
   extraPlugins = with pkgs.vimPlugins; [
