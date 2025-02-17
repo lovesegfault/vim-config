@@ -7,6 +7,7 @@
 {
   extraPackages = with pkgs; [
     nixfmt-rfc-style
+    vscode-extensions.vadimcn.vscode-lldb.adapter
   ];
 
   # XXX: The upstream crates-nvim module doesn't support the in-process LSP, so
@@ -14,11 +15,6 @@
   extraPlugins = with pkgs.vimPlugins; [
     crates-nvim
   ];
-
-  # FIXME: lldb is broken on darwin
-  # extraPackages = with pkgs; [
-  #   vscode-extensions.vadimcn.vscode-lldb.adapter
-  # ];
 
   plugins = {
     lsp = {
