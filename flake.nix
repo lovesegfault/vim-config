@@ -29,15 +29,8 @@
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs = {
-        flake-compat.follows = "flake-compat";
         flake-parts.follows = "flake-parts";
-        git-hooks.follows = "git-hooks";
         nixpkgs.follows = "nixpkgs";
-        treefmt-nix.follows = "treefmt-nix";
-
-        devshell.follows = "";
-        home-manager.follows = "";
-        nix-darwin.follows = "";
         nuschtosSearch.follows = "";
       };
     };
