@@ -55,7 +55,7 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@v16
         with:
           extra-conf: ${{ env.nix-conf }}
-      - uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@v16
         with:
           name: ${{ env.cachix-name }}
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
