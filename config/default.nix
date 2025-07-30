@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 {
@@ -21,8 +22,8 @@
   clipboard = {
     register = "unnamedplus";
     providers = {
-      wl-copy.enable = true;
-      xclip.enable = true;
+      wl-copy.enable = pkgs.stdenv.hostPlatform.isLinux;
+      xclip.enable = pkgs.stdenv.hostPlatform.isLinux;
     };
   };
 
