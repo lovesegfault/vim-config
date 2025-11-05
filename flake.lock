@@ -139,7 +139,9 @@
           "nixpkgs"
         ],
         "nuschtosSearch": [],
-        "systems": "systems"
+        "systems": [
+          "systems"
+        ]
       },
       "locked": {
         "lastModified": 1762293638,
@@ -163,6 +165,7 @@
         "nix-github-actions": "nix-github-actions",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",
+        "systems": "systems",
         "treefmt-nix": "treefmt-nix"
       }
     },
