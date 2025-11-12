@@ -41,8 +41,6 @@
       enable = true;
       settings.options.diagnostics = lib.mkIf config.plugins.lsp.enable "nvim_lsp";
     };
-    dap.enable = true;
-    dap-ui.enable = true;
     dressing.enable = true;
     gitsigns.enable = true;
     guess-indent.enable = true;

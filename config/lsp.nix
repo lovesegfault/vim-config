@@ -7,7 +7,6 @@
 {
   extraPackages = with pkgs; [
     nixfmt-rfc-style
-    vscode-extensions.vadimcn.vscode-lldb.adapter
   ];
 
   # XXX: The upstream crates-nvim module doesn't support the in-process LSP, so
