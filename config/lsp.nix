@@ -5,6 +5,9 @@
   ...
 }:
 {
+
+  dependencies.rust-analyzer.enable = false;
+
   extraPackages = with pkgs; [
     nixfmt-rfc-style
   ];
