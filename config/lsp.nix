@@ -95,7 +95,10 @@
       };
       servers = {
         bashls.enable = true;
-        clangd.enable = true;
+        clangd = {
+          enable = true;
+          package = null;
+        };
         lua_ls = {
           enable = true;
           settings = {
