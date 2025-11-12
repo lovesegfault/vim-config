@@ -96,7 +96,6 @@
       servers = {
         bashls.enable = true;
         clangd.enable = true;
-        ltex.enable = true;
         lua_ls = {
           enable = true;
           settings = {
@@ -136,7 +135,6 @@
       '';
     };
     clangd-extensions.enable = true;
-    ltex-extra.enable = true;
     rustaceanvim.enable = true;
   };
 }
