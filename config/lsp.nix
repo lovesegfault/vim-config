@@ -121,7 +121,10 @@
           };
         };
         ruff.enable = true;
-        pyright.enable = true;
+        pyright = {
+          enable = true;
+          package = null;
+        };
         texlab.enable = true;
         ts_ls.enable = true;
       };
