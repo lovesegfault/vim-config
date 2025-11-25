@@ -68,6 +68,7 @@
     };
     notify.enable = true;
     nvim-autopairs.enable = true;
+    render-markdown.enable = true;
     sleuth.enable = true;
     tmux-navigator.enable = true;
     todo-comments = {
